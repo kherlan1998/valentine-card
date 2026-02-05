@@ -1,0 +1,113 @@
+:root {
+    --primary: #ff4d6d;
+    --bg: #ffccd5;
+    --envelope-color: #ff8fa3;
+    --letter-bg: #fff0f3;
+}
+
+body {
+    background-color: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+}
+
+.container { position: relative; }
+
+.envelope-wrapper {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: var(--envelope-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+/* The Opening Flap */
+.flap {
+    position: absolute;
+    top: 0;
+    width: 0; height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 110px solid var(--primary);
+    transform-origin: top;
+    transition: transform 0.6s ease;
+    z-index: 4;
+}
+
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+}
+
+/* The Letter/Photo inside */
+.letter {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    width: 280px;
+    height: 180px;
+    background: var(--letter-bg);
+    z-index: 2;
+    transition: transform 0.8s ease;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.envelope-wrapper.open .letter {
+    transform: translateY(-130px);
+    z-index: 5; /* Brings it in front of the flap once opened */
+}
+
+.couple-img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border: 5px solid white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* The "Open" Heart Button */
+.heart {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    transform: translate(-50%, 0) rotate(45deg);
+    transition: 0.5s;
+    z-index: 6;
+    cursor: pointer;
+}
+
+.heart:before, .heart:after {
+    content: "";
+    position: absolute;
+    width: 50px; height: 50px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.heart:before { left: -25px; }
+.heart:after { top: -25px; }
+
+.envelope-wrapper.open .heart {
+    transform: translate(-50%, 150px) rotate(45deg) scale(0.6);
+}
+
+.close-inner {
+    margin-top: 5px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
