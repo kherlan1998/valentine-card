@@ -57,14 +57,15 @@ body {
     z-index: 4; 
 }
 
-/* THE LETTER - FIXED CENTERING */
+/* THE LETTER - FIXED SIDE-BY-SIDE CENTERING */
 .letter {
     position: absolute;
     bottom: 5px; 
-    /* This centers the letter perfectly side-by-side */
+    /* Lock to horizontal center of the 280px envelope */
     left: 50%;
     transform: translateX(-50%);
-    width: 250px;
+    /* Width is 260px, so 10px space on left/right inside the 280px envelope */
+    width: 260px;
     height: 160px;
     background: white;
     z-index: 2;
@@ -73,15 +74,15 @@ body {
     text-align: center;
     visibility: hidden; 
     opacity: 0;
-    box-sizing: border-box; /* Prevents padding from breaking width */
+    box-sizing: border-box; 
 }
 
 .envelope-wrapper.open .letter {
     visibility: visible;
     opacity: 1;
-    /* Lift up while keeping the center lock */
+    /* translate moves it up (-150px) while maintaining the 50% center lock */
     transform: translate(-50%, -150px);
-    height: 270px; 
+    height: 280px; 
     z-index: 10; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
@@ -89,11 +90,12 @@ body {
 /* IMAGE FRAME - Polaroid Style */
 .photo-frame { 
     width: 100%; 
-    height: 190px; 
+    height: 200px; 
     overflow: hidden; 
-    border: 4px solid white; 
+    border: 5px solid white; 
     background: white;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
 }
 
 .couple-img { 
@@ -105,8 +107,9 @@ body {
 .message {
     color: var(--env-dark);
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     margin: 0;
+    line-height: 1.2;
 }
 
 /* FRONT POCKET */
@@ -160,7 +163,7 @@ body {
     transform: translate(-50%, 150px) rotate(45deg) scale(0.6); 
 }
 
-/* FLOATING HEARTS */
+/* FLOATING HEARTS BACKGROUND */
 .bg-hearts { position: fixed; top: 0; width: 100%; height: 100%; z-index: -1; }
 .floating-heart {
     position: absolute;
