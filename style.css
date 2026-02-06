@@ -1,159 +1,46 @@
-:root {
-    --primary: #9d4edd;
-    --bg: #e0aaff;
-    --envelope-main: #7b2cbf;
-    --envelope-dark: #5a189a;
-    --envelope-light: #9d4edd;
-    --letter-bg: #ffffff;
+/* FLOATING HEARTS STYLE - Fixed for crisp shapes */
+.bg-hearts { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: -1; 
 }
 
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-body {
-    background-color: var(--bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    overflow: hidden;
-}
-
-/* 3D Container */
-.envelope-wrapper {
-    position: relative;
-    width: 300px;
-    height: 200px;
-    background-color: var(--envelope-dark); /* The "back" of the envelope */
-    perspective: 1000px;
-    cursor: pointer;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-/* The Letter/Photo (Scaled to fit perfectly) */
-.letter {
+.floating-heart {
     position: absolute;
-    bottom: 0;
-    left: 10px;
-    width: 280px;
-    height: 180px;
-    background: var(--letter-bg);
-    z-index: 2;
-    transition: transform 0.8s ease-in-out, height 0.8s ease-in-out;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    bottom: -50px;
+    /* This creates a perfect heart shape using a single element */
+    aspect-ratio: 1;
+    mask: radial-gradient(at 70% 31%,#000 64%,#0000 65%) 100% 0,
+          radial-gradient(at 30% 31%,#000 64%,#0000 65%) 0 0,
+          conic-gradient(#000 88deg,#0000 90deg) at 50% 88%;
+    mask-size: 51% 51%;
+    mask-repeat: no-repeat;
+    background: #ff4d6d; /* Default color */
+    animation: floatUp linear infinite;
+    opacity: 0.8;
 }
 
-.envelope-wrapper.open .letter {
-    transform: translateY(-150px);
-    height: 250px; /* Expands when it pops out */
-    z-index: 5;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+/* Fallback for older browsers if mask doesn't support */
+@supports not (mask: radial-gradient(at 70% 31%,#000)) {
+    .floating-heart {
+        border-radius: 50% 50% 0 0;
+        transform: rotate(-45deg);
+    }
+    .floating-heart::before {
+        content: "";
+        position: absolute;
+        width: 100%; height: 100%;
+        background: inherit;
+        border-radius: 50% 50% 0 0;
+        transform: rotate(90deg);
+        transform-origin: bottom right;
+    }
 }
 
-.photo-frame {
-    width: 100%;
-    height: 80%;
-    overflow: hidden;
-    border: 5px solid white;
-}
-
-.couple-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Realistic 3D Front Pocket */
-.front {
-    position: absolute;
-    width: 0; height: 0;
-    border-left: 150px solid transparent;
-    border-right: 150px solid transparent;
-    border-bottom: 110px solid var(--envelope-main);
-    bottom: 0;
-    z-index: 4; /* Keeps letter behind it until opened */
-}
-
-/* Side Flaps */
-.envelope-wrapper::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    border-left: 150px solid var(--envelope-light);
-    border-top: 100px solid transparent;
-    border-bottom: 100px solid transparent;
-    z-index: 3;
-}
-
-.envelope-wrapper::after {
-    content: "";
-    position: absolute;
-    top: 0; right: 0;
-    border-right: 150px solid var(--envelope-light);
-    border-top: 100px solid transparent;
-    border-bottom: 100px solid transparent;
-    z-index: 3;
-}
-
-/* The 3D Top Flap */
-.flap {
-    position: absolute;
-    top: 0;
-    width: 0; height: 0;
-    border-left: 150px solid transparent;
-    border-right: 150px solid transparent;
-    border-top: 110px solid var(--envelope-dark);
-    transform-origin: top;
-    transition: transform 0.6s ease;
-    z-index: 6; /* Always on top when closed */
-}
-
-.envelope-wrapper.open .flap {
-    transform: rotateX(180deg);
-    z-index: 1; /* Moves behind when open */
-}
-
-/* Heart Button Positioned in the Middle of the V */
-.heart {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
-    background: #ff4d6d;
-    transform: translate(-50%, -20%) rotate(45deg);
-    transition: 0.5s;
-    z-index: 10;
-}
-
-.heart:before, .heart:after {
-    content: "";
-    position: absolute;
-    width: 40px; height: 40px;
-    background: #ff4d6d;
-    border-radius: 50%;
-}
-.heart:before { left: -20px; }
-.heart:after { top: -20px; }
-
-.envelope-wrapper.open .heart {
-    transform: translate(-50%, 150px) rotate(45deg) scale(0.6);
-}
-
-/* Instruction Text */
-.instruction {
-    position: absolute;
-    bottom: -60px;
-    width: 100%;
-    text-align: center;
-    color: var(--envelope-dark);
-    font-weight: bold;
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
 }
