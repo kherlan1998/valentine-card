@@ -1,8 +1,8 @@
 :root {
-    --primary: #9d4edd;    /* Deep Purple */
-    --bg: #e0aaff;         /* Light Purple Bg */
-    --envelope-color: #7b2cbf; /* Main Envelope Purple */
-    --flap-color: #5a189a;    /* Darker Purple for 3D effect */
+    --primary: #9d4edd;
+    --bg: #e0aaff;
+    --envelope-color: #7b2cbf;
+    --flap-color: #5a189a;
     --letter-bg: #ffffff;
 }
 
@@ -33,111 +33,126 @@ body {
 
 .envelope-wrapper {
     position: relative;
-    width: 280px; /* Mobile friendly width */
-    height: 180px;
+    width: 300px;
+    height: 200px;
     background-color: var(--envelope-color);
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     cursor: pointer;
 }
 
-/* 3D Front of Envelope (Keeps letter hidden) */
+/* THE FRONT POCKET (Hides the photo) */
 .front {
     position: absolute;
     width: 0; height: 0;
-    border-left: 140px solid transparent;
-    border-right: 140px solid transparent;
-    border-bottom: 100px solid var(--envelope-color);
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 110px solid var(--envelope-color);
     bottom: 0;
-    z-index: 3;
+    z-index: 10; /* Higher than the letter */
 }
 
-.front::after {
+/* Side folds to help hide the image */
+.envelope::before {
     content: "";
     position: absolute;
+    top: 0; left: 0;
     width: 0; height: 0;
-    border-left: 140px solid var(--flap-color);
-    border-right: 140px solid transparent;
+    border-left: 150px solid var(--flap-color);
+    border-top: 100px solid transparent;
     border-bottom: 100px solid transparent;
-    left: -140px;
-    bottom: -100px;
-    opacity: 0.2;
+    z-index: 9;
 }
 
-/* The Opening Flap */
+.envelope::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-right: 150px solid var(--flap-color);
+    border-top: 100px solid transparent;
+    border-bottom: 100px solid transparent;
+    z-index: 9;
+}
+
 .flap {
     position: absolute;
-    top: 0;
-    width: 0; height: 0;
-    border-left: 140px solid transparent;
-    border-right: 140px solid transparent;
-    border-top: 100px solid var(--flap-color);
+    top: 0; width: 0; height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 115px solid var(--flap-color);
     transform-origin: top;
     transition: transform 0.6s ease;
-    z-index: 4;
+    z-index: 11; /* Topmost layer when closed */
 }
 
 .envelope-wrapper.open .flap {
     transform: rotateX(180deg);
-    z-index: 1; /* Moves behind when opened */
+    z-index: 1;
 }
 
-/* The Letter (Photo) */
+/* THE LETTER/PHOTO (Larger Size) */
 .letter {
     position: absolute;
-    bottom: 5px;
+    bottom: 10px;
     left: 10px;
-    width: 260px;
-    height: 160px;
+    width: 280px;
+    height: 180px; /* Base size inside */
     background: var(--letter-bg);
-    z-index: 2; /* Sits between front and back */
-    transition: transform 0.8s ease-in-out;
+    z-index: 5; /* Behind the front pocket */
+    transition: all 0.8s ease-in-out;
     text-align: center;
-    padding: 10px;
+    padding: 15px;
 }
 
 .envelope-wrapper.open .letter {
-    transform: translateY(-110px);
-    z-index: 5; /* Pops to the very front */
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateY(-160px); /* Popping out further */
+    height: 300px; /* Making the letter taller when open */
+    z-index: 12; /* Popping in front of everything */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
 .couple-img {
     width: 100%;
-    height: 110px;
+    height: 200px; /* Big Image */
     object-fit: cover;
-    border: 3px solid white;
+    border: 5px solid white;
 }
 
-/* The Heart Toggle */
+.message {
+    font-size: 1.2rem;
+    color: var(--flap-color);
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* HEART TOGGLE BUTTON */
 .heart {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
+    top: 55%; left: 50%;
+    width: 50px; height: 50px;
     background: #ff4d6d;
-    transform: translate(-50%, -20%) rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
     transition: 0.5s;
-    z-index: 6;
+    z-index: 15;
 }
 
 .heart:before, .heart:after {
     content: "";
     position: absolute;
-    width: 40px; height: 40px;
+    width: 50px; height: 50px;
     background: #ff4d6d;
     border-radius: 50%;
 }
-
-.heart:before { left: -20px; }
-.heart:after { top: -20px; }
+.heart:before { left: -25px; }
+.heart:after { top: -25px; }
 
 .envelope-wrapper.open .heart {
-    transform: translate(-50%, 120px) rotate(45deg) scale(0.7);
+    transform: translate(-50%, 200px) rotate(45deg) scale(0.6);
+    opacity: 0.8;
 }
 
 .instruction {
-    margin-top: 40px;
+    margin-top: 50px;
     color: var(--flap-color);
     font-weight: bold;
     animation: bounce 2s infinite;
@@ -148,24 +163,22 @@ body {
     40% {transform: translateY(-10px);}
 }
 
-/* Floating Background Hearts */
+/* FLOATING HEARTS STYLE */
 .bg-hearts { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-.bg-heart { 
-    position: absolute; bottom: -10%; background: #ff4d6d; width: 15px; height: 15px; 
-    transform: rotate(45deg); opacity: 0.5; animation: float 8s infinite linear; 
+.floating-heart {
+    position: absolute;
+    bottom: -50px;
+    transform: rotate(45deg);
+    animation: floatUp linear infinite;
 }
-.bg-heart::before, .bg-heart::after { content: ''; position: absolute; width: 15px; height: 15px; background: #ff4d6d; border-radius: 50%; }
-.bg-heart::before { top: -8px; left: 0; }
-.bg-heart::after { left: -8px; top: 0; }
+.floating-heart::before, .floating-heart::after {
+    content: ""; position: absolute; width: 100%; height: 100%;
+    background: inherit; border-radius: 50%;
+}
+.floating-heart::before { top: -50%; }
+.floating-heart::after { left: -50%; }
 
-@keyframes float {
-    0% { transform: translateY(0) rotate(45deg); opacity: 0.6; }
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity: 1; }
     100% { transform: translateY(-110vh) rotate(45deg); opacity: 0; }
 }
-
-/* Multi-heart positions */
-.bg-heart:nth-child(1) { left: 10%; animation-delay: 0s; }
-.bg-heart:nth-child(2) { left: 30%; animation-delay: 2s; }
-.bg-heart:nth-child(3) { left: 50%; animation-delay: 4s; }
-.bg-heart:nth-child(4) { left: 75%; animation-delay: 1s; }
-.bg-heart:nth-child(5) { left: 90%; animation-delay: 6s; }
