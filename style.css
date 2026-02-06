@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Better for mobile */
+    min-height: 100vh;
     margin: 0;
     padding: 0;
     overflow: hidden;
@@ -24,7 +24,6 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 10;
-    width: 100%; /* Ensures horizontal centering */
 }
 
 .envelope-wrapper {
@@ -35,7 +34,7 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* SIDE FOLDS - Perfectly aligned to cover the edges */
+/* SIDE FOLDS - Covers the letter perfectly */
 .envelope-wrapper::before {
     content: "";
     position: absolute;
@@ -58,12 +57,14 @@ body {
     z-index: 4; 
 }
 
-/* THE LETTER - Centered exactly inside the 280px width */
+/* THE LETTER - FIXED CENTERING */
 .letter {
     position: absolute;
-    bottom: 0; 
-    left: 10px; /* (280px total - 260px letter) / 2 = 10px */
-    width: 260px;
+    bottom: 5px; 
+    /* This centers the letter perfectly side-by-side */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
     height: 160px;
     background: white;
     z-index: 2;
@@ -72,26 +73,27 @@ body {
     text-align: center;
     visibility: hidden; 
     opacity: 0;
-    pointer-events: none; /* Prevents clicking through the envelope */
+    box-sizing: border-box; /* Prevents padding from breaking width */
 }
 
 .envelope-wrapper.open .letter {
     visibility: visible;
     opacity: 1;
-    transform: translateY(-140px); /* Lifted slightly higher */
-    height: 260px; 
+    /* Lift up while keeping the center lock */
+    transform: translate(-50%, -150px);
+    height: 270px; 
     z-index: 10; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    pointer-events: auto;
 }
 
-/* IMAGE SIZING - Polaroid Style */
+/* IMAGE FRAME - Polaroid Style */
 .photo-frame { 
     width: 100%; 
     height: 190px; 
     overflow: hidden; 
-    border: 5px solid white; 
+    border: 4px solid white; 
     background: white;
+    margin-bottom: 5px;
 }
 
 .couple-img { 
@@ -103,8 +105,8 @@ body {
 .message {
     color: var(--env-dark);
     font-weight: bold;
-    margin-top: 10px;
-    font-size: 16px;
+    font-size: 14px;
+    margin: 0;
 }
 
 /* FRONT POCKET */
