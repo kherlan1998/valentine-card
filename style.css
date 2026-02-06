@@ -30,6 +30,8 @@ body {
     height: 180px;
     background-color: var(--env-dark);
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    /* CRITICAL FIX: This keeps the image from peeking out the bottom/sides */
+    overflow: visible; 
 }
 
 /* SIDE FOLDS (These hide the image completely) */
@@ -41,7 +43,7 @@ body {
     border-left: 140px solid var(--env-light);
     border-top: 90px solid transparent;
     border-bottom: 90px solid transparent;
-    z-index: 4; /* Sits over the letter */
+    z-index: 4; 
 }
 
 .envelope-wrapper::after {
@@ -52,36 +54,42 @@ body {
     border-right: 140px solid var(--env-light);
     border-top: 90px solid transparent;
     border-bottom: 90px solid transparent;
-    z-index: 4; /* Sits over the letter */
+    z-index: 4; 
 }
 
 /* THE LETTER (Hidden inside the folds) */
 .letter {
     position: absolute;
-    bottom: 5px;
+    bottom: 0; /* Keep it aligned to bottom so it doesn't show at top */
     left: 10px;
     width: 260px;
     height: 160px;
     background: white;
-    z-index: 2; /* Sits behind side folds and front fold */
+    z-index: 2; /* Behind the folds */
     transition: 0.8s ease-in-out;
     padding: 10px;
     text-align: center;
+    /* Hide by default */
+    visibility: hidden; 
+    opacity: 0;
 }
 
 .envelope-wrapper.open .letter {
+    visibility: visible;
+    opacity: 1;
     transform: translateY(-130px);
-    height: 250px; /* Big size but not too big */
-    z-index: 10; /* Pops to the front */
+    height: 250px; 
+    z-index: 10; /* Move to front */
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* IMAGE SIZING (Same as the sample) */
+/* IMAGE SIZING (Corrected for your reference) */
 .photo-frame { 
     width: 100%; 
-    height: 180px; /* Adjusted for better visibility */
+    height: 180px; 
     overflow: hidden; 
-    border: 4px solid white; 
+    border: 5px solid white; /* Thicker white border like a Polaroid */
+    background: white;
 }
 
 .couple-img { 
@@ -93,8 +101,8 @@ body {
 .message {
     color: var(--env-dark);
     font-weight: bold;
-    margin-top: 8px;
-    font-size: 14px;
+    margin-top: 10px;
+    font-size: 16px;
 }
 
 .front {
@@ -104,7 +112,7 @@ body {
     border-left: 140px solid transparent;
     border-right: 140px solid transparent;
     border-bottom: 100px solid var(--env-main);
-    z-index: 5; /* Sits over side folds and letter */
+    z-index: 5; 
 }
 
 .flap {
@@ -116,7 +124,7 @@ body {
     border-top: 100px solid var(--env-dark);
     transform-origin: top;
     transition: 0.6s;
-    z-index: 6; /* Topmost piece when closed */
+    z-index: 6; 
 }
 
 .envelope-wrapper.open .flap { 
@@ -145,7 +153,7 @@ body {
     transform: translate(-50%, 150px) rotate(45deg) scale(0.6); 
 }
 
-/* Clean Floating Hearts */
+/* FLOATING HEARTS (Keep as is) */
 .bg-hearts { position: fixed; top: 0; width: 100%; height: 100%; z-index: -1; }
 .floating-heart {
     position: absolute;
