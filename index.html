@@ -2,11 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>For My Valentine ❤️</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="bg-hearts">
+        <div class="bg-heart"></div>
+        <div class="bg-heart"></div>
+        <div class="bg-heart"></div>
+        <div class="bg-heart"></div>
+        <div class="bg-heart"></div>
+    </div>
+
     <div class="container">
         <div class="envelope-wrapper">
             <div class="envelope">
@@ -18,13 +26,12 @@
                     </div>
                     <div class="message">
                         <p>Happy Valentine's Day!</p>
-                        <button class="close-inner" id="innerClose">Close ✕</button>
                     </div>
                 </div>
             </div>
             <div class="heart" id="heartBtn"></div>
         </div>
-        <p class="instruction">Tap the heart to open</p>
+        <p class="instruction">Tap the heart to open/close</p>
     </div>
 
     <audio id="valMusic" loop>
