@@ -10,8 +10,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Better for mobile */
     margin: 0;
+    padding: 0;
     overflow: hidden;
     font-family: Arial, sans-serif;
 }
@@ -21,7 +22,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     z-index: 10;
+    width: 100%; /* Ensures horizontal centering */
 }
 
 .envelope-wrapper {
@@ -30,11 +33,9 @@ body {
     height: 180px;
     background-color: var(--env-dark);
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    /* CRITICAL FIX: This keeps the image from peeking out the bottom/sides */
-    overflow: visible; 
 }
 
-/* SIDE FOLDS (These hide the image completely) */
+/* SIDE FOLDS - Perfectly aligned to cover the edges */
 .envelope-wrapper::before {
     content: "";
     position: absolute;
@@ -57,38 +58,39 @@ body {
     z-index: 4; 
 }
 
-/* THE LETTER (Hidden inside the folds) */
+/* THE LETTER - Centered exactly inside the 280px width */
 .letter {
     position: absolute;
-    bottom: 0; /* Keep it aligned to bottom so it doesn't show at top */
-    left: 10px;
+    bottom: 0; 
+    left: 10px; /* (280px total - 260px letter) / 2 = 10px */
     width: 260px;
     height: 160px;
     background: white;
-    z-index: 2; /* Behind the folds */
+    z-index: 2;
     transition: 0.8s ease-in-out;
     padding: 10px;
     text-align: center;
-    /* Hide by default */
     visibility: hidden; 
     opacity: 0;
+    pointer-events: none; /* Prevents clicking through the envelope */
 }
 
 .envelope-wrapper.open .letter {
     visibility: visible;
     opacity: 1;
-    transform: translateY(-130px);
-    height: 250px; 
-    z-index: 10; /* Move to front */
+    transform: translateY(-140px); /* Lifted slightly higher */
+    height: 260px; 
+    z-index: 10; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    pointer-events: auto;
 }
 
-/* IMAGE SIZING (Corrected for your reference) */
+/* IMAGE SIZING - Polaroid Style */
 .photo-frame { 
     width: 100%; 
-    height: 180px; 
+    height: 190px; 
     overflow: hidden; 
-    border: 5px solid white; /* Thicker white border like a Polaroid */
+    border: 5px solid white; 
     background: white;
 }
 
@@ -105,6 +107,7 @@ body {
     font-size: 16px;
 }
 
+/* FRONT POCKET */
 .front {
     position: absolute;
     bottom: 0;
@@ -115,6 +118,7 @@ body {
     z-index: 5; 
 }
 
+/* TOP FLAP */
 .flap {
     position: absolute;
     top: 0;
@@ -132,6 +136,7 @@ body {
     z-index: 1; 
 }
 
+/* SEALING HEART */
 .heart {
     position: absolute;
     top: 50%; left: 50%;
@@ -153,7 +158,7 @@ body {
     transform: translate(-50%, 150px) rotate(45deg) scale(0.6); 
 }
 
-/* FLOATING HEARTS (Keep as is) */
+/* FLOATING HEARTS */
 .bg-hearts { position: fixed; top: 0; width: 100%; height: 100%; z-index: -1; }
 .floating-heart {
     position: absolute;
@@ -163,8 +168,8 @@ body {
 }
 
 @keyframes floatUp {
-    0% { transform: translateY(0); opacity: 0.8; }
-    100% { transform: translateY(-110vh); opacity: 0; }
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
 }
 
-.instruction { margin-top: 30px; color: var(--env-dark); font-weight: bold; }
+.instruction { margin-top: 40px; color: var(--env-dark); font-weight: bold; }
