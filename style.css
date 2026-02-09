@@ -1,9 +1,9 @@
 :root {
-    --bg: #e0aaff;
-    --env-main: #7b2cbf;
-    --env-dark: #5a189a;
-    --env-light: #9d4edd;
-    --open-speed: 0.8s; /* Controlled speed for realistic opening */
+    --primary: #ff4d6d;
+    --bg: #ffccd5;
+    --envelope-color: #ff8fa3;
+    --envelope-dark: #ff758f;
+    --letter-bg: #fff0f3;
 }
 
 body {
@@ -11,170 +11,137 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     margin: 0;
-    padding: 0;
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
-    font-family: Arial, sans-serif;
 }
 
-.container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
+.container { position: relative; }
 
 .envelope-wrapper {
     position: relative;
-    width: 280px;
-    height: 180px;
-    background-color: var(--env-dark);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    width: 300px;
+    height: 200px;
+    background-color: var(--envelope-dark);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
 }
 
-/* SIDE FOLDS - Perfectly aligned to the 280px width */
-.envelope-wrapper::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 0; height: 0;
-    border-left: 140px solid var(--env-light);
-    border-top: 90px solid transparent;
-    border-bottom: 90px solid transparent;
-    z-index: 4; 
-}
-
+/* This creates the front panel to hide the video while closed */
 .envelope-wrapper::after {
     content: "";
     position: absolute;
-    top: 0; right: 0;
-    width: 0; height: 0;
-    border-right: 140px solid var(--env-light);
-    border-top: 90px solid transparent;
-    border-bottom: 90px solid transparent;
-    z-index: 4; 
+    z-index: 3; 
+    width: 300px;
+    height: 200px;
+    background-color: var(--envelope-color);
+    /* This creates the V-shape pocket */
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0, 50% 50%);
 }
 
-/* THE LETTER - CENTERED AND DELAYED */
-.letter {
-    position: absolute;
-    bottom: 5px; 
-    left: 50%;
-    /* Start centered and hidden */
-    transform: translateX(-50%);
-    width: 260px; /* 10px margin on each side (280 - 260 = 20 / 2) */
-    height: 160px;
-    background: white;
-    z-index: 2;
-    padding: 10px;
-    text-align: center;
-    visibility: hidden; 
-    opacity: 0;
-    box-sizing: border-box;
-    /* Delay the letter until the flap is halfway open */
-    transition: transform 1s ease-in-out 0.6s, opacity 0.8s ease-in-out 0.6s, height 1s ease-in-out 0.6s;
-}
-
-.envelope-wrapper.open .letter {
-    visibility: visible;
-    opacity: 1;
-    /* Lift up while keeping horizontal center */
-    transform: translate(-50%, -150px);
-    height: 280px; 
-    z-index: 10; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* IMAGE FRAME */
-.photo-frame { 
-    width: 100%; 
-    height: 200px; 
-    overflow: hidden; 
-    border: 4px solid white; 
-    background: white;
-    margin-bottom: 8px;
-}
-
-.couple-img { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-}
-
-.message {
-    color: var(--env-dark);
-    font-weight: bold;
-    font-size: 15px;
-    margin: 0;
-}
-
-/* FRONT POCKET */
-.front {
-    position: absolute;
-    bottom: 0;
-    width: 0; height: 0;
-    border-left: 140px solid transparent;
-    border-right: 140px solid transparent;
-    border-bottom: 100px solid var(--env-main);
-    z-index: 5; 
-}
-
-/* TOP FLAP - REALISTIC SLOW OPEN */
 .flap {
     position: absolute;
     top: 0;
-    width: 0; height: 0;
-    border-left: 140px solid transparent;
-    border-right: 140px solid transparent;
-    border-top: 100px solid var(--env-dark);
+    width: 0; 
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 110px solid var(--primary);
     transform-origin: top;
-    transition: transform var(--open-speed) ease-in-out;
-    z-index: 6; 
+    transition: transform 0.6s ease;
+    z-index: 4; 
 }
 
-.envelope-wrapper.open .flap { 
-    transform: rotateX(180deg); 
-    z-index: 1; /* Moves behind the letter once open */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1; 
 }
 
-/* SEALING HEART */
+.letter {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    width: 280px;
+    height: 180px;
+    background: var(--letter-bg);
+    z-index: 2; /* Sits behind the front panel (::after) */
+    transition: transform 0.8s ease;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.envelope-wrapper.open .letter {
+    transform: translateY(-130px);
+    z-index: 5; 
+}
+
+/* Updated Video Logic */
+.photo-frame {
+    width: 100%;
+    height: 135px;
+    background: #000; /* Black background fills space if video is vertical/wide */
+    border: 3px solid white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.couple-video {
+    width: 100%;
+    height: 100%;
+    /* 'contain' ensures the WHOLE video is visible without cropping */
+    object-fit: contain; 
+    display: block;
+}
+
+.message p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: bold;
+}
+
 .heart {
     position: absolute;
-    top: 50%; left: 50%;
-    width: 40px; height: 40px;
-    background: #ff4d6d;
-    transform: translate(-50%, -20%) rotate(45deg);
-    z-index: 7;
+    bottom: 80px;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    transform: translate(-50%, 0) rotate(45deg);
+    transition: 0.5s;
+    z-index: 6; 
     cursor: pointer;
-    transition: transform 0.6s ease-in-out;
 }
 
-.heart::before, .heart::after {
-    content: ""; position: absolute; width: 40px; height: 40px;
-    background: #ff4d6d; border-radius: 50%;
-}
-.heart::before { left: -20px; }
-.heart::after { top: -20px; }
-
-.envelope-wrapper.open .heart { 
-    transform: translate(-50%, 160px) rotate(45deg) scale(0.5); 
-}
-
-/* FLOATING HEARTS BACKGROUND */
-.bg-hearts { position: fixed; top: 0; width: 100%; height: 100%; z-index: -1; }
-.floating-heart {
+.heart:before, .heart:after {
+    content: "";
     position: absolute;
-    bottom: -50px;
-    clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
-    animation: floatUp linear infinite;
+    width: 50px; height: 50px;
+    background: var(--primary);
+    border-radius: 50%;
 }
 
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 0.8; }
-    100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+.heart:before { left: -25px; }
+.heart:after { top: -25px; }
+
+.envelope-wrapper.open .heart {
+    transform: translate(-50%, 160px) rotate(45deg) scale(0.6);
 }
 
-.instruction { margin-top: 40px; color: var(--env-dark); font-weight: bold; }
+.close-inner {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+}
